@@ -1,0 +1,18 @@
+<launch>
+
+  <arg name="model" default="$(find mapas4D)/urdf/caja.urdf"/>
+
+  <param name="robot_description" command="$(find xacro)/xacro --inorder $(arg model)" />
+
+  <node pkg="robot_localization" type="ekf_localization_node" name="ekf_se" clear_params="true">
+    <rosparam command="load" file="$(find mapas4D)/params/ekf_template_for_imu.yaml" />
+    <remap from="odometry/filtered" to="odometry/filtered/my_imu"/>
+    <remap from="accel/filtered" to="accel/filtered/my_imu"/>
+
+  </node>
+  <!--
+  <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher" />
+
+  <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" />
+  -->
+</launch>
