@@ -29,6 +29,10 @@ int status;
 
 void setup() {
   // serial to display data
+
+  CLKPR = 0x80;
+  CLKPR = 0x00;
+  
   Serial.begin(115200);
   while(!Serial) {}
 
@@ -44,21 +48,31 @@ void setup() {
 }
 
 void loop() {
+  String msg = "";
   // read the sensor
   IMU.readSensor();
   // display the data
-  Serial.print(-1*IMU.getAccelY_mss(),6);
+  /*Serial.print(IMU.getAccelX_mss(),6);
   Serial.print(",");
-  Serial.print(-1*IMU.getAccelX_mss(),6);
+  Serial.print(IMU.getAccelY_mss(),6);
   Serial.print(",");
   Serial.print(IMU.getAccelZ_mss(),6);
   Serial.print(",");
-  Serial.print(IMU.getGyroY_rads(),6);
-  Serial.print(",");
   Serial.print(IMU.getGyroX_rads(),6);
   Serial.print(",");
-  Serial.print(-1*IMU.getGyroZ_rads(),6);
-  Serial.println(",");
+  Serial.print(IMU.getGyroY_rads(),6);
+  Serial.print(",");
+  Serial.print(IMU.getGyroZ_rads(),6);
+  Serial.println(",");*/
+
+  msg += String(IMU.getAccelX_mss(),6) + ",";
+  msg += String(IMU.getAccelY_mss(),6) + ",";
+  msg += String(IMU.getAccelZ_mss(),6) + ",";
+  msg += String(IMU.getGyroX_rads(),6) + ",";
+  msg += String(IMU.getGyroY_rads(),6) + ",";
+  msg += String(IMU.getGyroZ_rads(),6) + ",";
+  Serial.println(msg);
+  
   /*Serial.print("\t");
   Serial.print(IMU.getMagX_uT(),6);
   Serial.print("\t");
