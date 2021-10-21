@@ -29,9 +29,9 @@ int main(int argc, char** argv)
 
   ros::NodeHandle nh;
   
-  my_imu_odom.orientation_covariance = {1,0,0,0,1,0,0,0,1};
-  my_imu_odom.angular_velocity_covariance = {1,0,0,0,1,0,0,0,1};
-  my_imu_odom.linear_acceleration_covariance = {1,0,0,0,1,0,0,0,1};
+  my_imu_odom.orientation_covariance = {0.001,0,0,0,0.001,0,0,0,0.001};
+  my_imu_odom.angular_velocity_covariance = {0.001,0,0,0,0.001,0,0,0,0.001};
+  my_imu_odom.linear_acceleration_covariance = {0.001,0,0,0,0.001,0,0,0,0.001};
   
   my_imu_from_odom_pub = nh.advertise<Imu>("my_imu_from_odom", 10);
 
