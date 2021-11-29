@@ -14,6 +14,7 @@ find_package(catkin REQUIRED COMPONENTS
   rospy
   sensor_msgs
   message_filters
+  tf
 )
 
 ## System dependencies are found with CMake's conventions
@@ -136,8 +137,13 @@ include_directories(
 ## Declare a C++ executable
 ## With catkin_make all packages are built within a single CMake context
 ## The recommended prefix ensures that target names across packages don't collide
+
 add_executable(my_imu_from_odom src/my_imu_from_odom.cpp)
 target_link_libraries(my_imu_from_odom ${catkin_LIBRARIES})
+
+add_executable(navigate_map_key src/navigate_map_key.cpp)
+target_link_libraries(navigate_map_key ${catkin_LIBRARIES})
+
 ## Rename C++ executable without prefix
 ## The above recommended prefix causes long target names, the following renames the
 ## target back to the shorter version for ease of user use
