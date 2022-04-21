@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.0.2)
 project(mapas4D)
-
+set(CMAKE_CXX_FLAGS "-std=c++11")
 ## Compile as C++11, supported in ROS Kinetic and newer
 #add_compile_options(-std=c++14)
 
@@ -16,6 +16,10 @@ find_package(catkin REQUIRED COMPONENTS
   message_filters
   tf
 )
+
+find_package(OpenCV REQUIRED)  
+
+#find_package(lCppLinuxSerial REQUIRED QUIET)
 
 ## System dependencies are found with CMake's conventions
 # find_package(Boost REQUIRED COMPONENTS system)
@@ -107,10 +111,10 @@ find_package(catkin REQUIRED COMPONENTS
 ## CATKIN_DEPENDS: catkin_packages dependent projects also need
 ## DEPENDS: system dependencies of this project that dependent projects also need
 catkin_package(
-#  INCLUDE_DIRS include
+    #   INCLUDE_DIRS include
 #  LIBRARIES mapas4D
 #  CATKIN_DEPENDS geometry_msgs roscpp rospy sensor_msgs
-#  DEPENDS system_lib
+#   DEPENDS CppLinuxSerial 
 )
 
 ###########
@@ -120,9 +124,18 @@ catkin_package(
 ## Specify additional locations of header files
 ## Your package locations should be listed before other locations
 include_directories(
-# include
-  ${catkin_INCLUDE_DIRS}
+    #   include
+    ${catkin_INCLUDE_DIRS}
+    #  ${CppLinuxSerial_INCLUDE_DIR}
+    ${OpenCV_INCLUDE_DIRS}
 )
+
+include_directories(
+    /usr/local/include/CppLinuxSerial/
+    ${OpenCV_LIBRARY_DIRS} 
+    )
+
+add_library(cppLinuxSerial ~/CppLinuxSerial/src/SerialPort.cpp)
 
 ## Declare a C++ library
 # add_library(${PROJECT_NAME}
@@ -143,6 +156,12 @@ target_link_libraries(my_imu_from_odom ${catkin_LIBRARIES})
 
 add_executable(navigate_map_key src/navigate_map_key.cpp)
 target_link_libraries(navigate_map_key ${catkin_LIBRARIES})
+
+add_executable(imu_com src/imu_com.cpp)
+target_link_libraries(imu_com ${catkin_LIBRARIES} cppLinuxSerial)
+
+add_executable(fisheye_mask_generator src/fisheye_mask_generator.cpp)
+target_link_libraries(fisheye_mask_generator ${catkin_LIBRARIES} ${OpenCV_LIBS})
 
 ## Rename C++ executable without prefix
 ## The above recommended prefix causes long target names, the following renames the
